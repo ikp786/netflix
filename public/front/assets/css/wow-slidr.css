@@ -1,0 +1,187 @@
+.slideshow a:hover,.about a:hover,.entry a:hover,.entry2 a:hover,.sidebar a:hover,.right386 a:hover{
+  text-decoration:none;
+  border-bottom:1px solid #cdc9b3}              
+
+.right304 blockquote p{margin-bottom:24px}
+.right304 ul{margin-bottom:24px}
+blockquote:before{color:#b05348;
+                                   display:block;
+                                   width:50px;
+                                   content:open-quote;
+                                   height:0;
+                                   margin-left:-45px;
+                                   font:normal 700 60px normal Georgia, "Times New Roman",Times,serif}
+.container{
+  background-position:0 top;
+  margin:0 auto;
+  padding-bottom:48px;
+}
+#flags,
+.section,
+* html .container,
+.container > h1,
+.container > div,
+.container > p,
+.container > ul,
+.container .container{
+  display: block;
+  max-width:984px;  
+  margin: 0 auto;
+}
+.container1{background-position:0 top;max-width:984px;margin:0
+auto;padding-bottom:0px}
+.slideshow li .right2 h2,.slideshow li .right h2{text-indent:-9999px;margin-bottom:24px}
+.slideshow h1{font-size:36px}
+.slideshow .left{width:380px;float:left}
+.slideshow .right{width:300px;margin-right:25px}
+.slideshow .left2{float:left;width:300px}
+.slideshow .right2{float:right;width:504px;margin-top:12px}
+.slideshow .slide-nav{width:960px;position:absolute;bottom:15px;left:0;height:30px;z-index:10}
+.slideshow .slide-nav ul{float:right;position:relative;list-style:none;padding:0 6px 0 0;margin:0 24px 0 0;top:0;height:30px}
+.slideshow .slide-nav li{width:18px;height:18px;float:left;margin:0 8px 0 0;padding:0}
+.slideshow .slide-nav a{display:block;width:18px;height:18px;text-align:center;overflow:hidden;color:#fff;
+                                             text-indent:-9999px;
+                                             margin:0;
+                                             padding:0;cursor:pointer}
+.slideshow .slide-nav a:hover,.slideshow .slide-nav .active a{background-color:transparent;background-repeat:no-repeat;background-attachment:scroll; background-position:0 0;text-decoration:none}
+/* For Cube Over in old Demos */
+[id*=wowslider-container] .ws_cube_side,
+#wowslider-container .ws_cube_side,
+#wowslider-container1 .ws_cube_side {
+  background: #A6A5A9;
+}
+/* fullwidth slider styles */
+.fullwidth > [id*=wowslider-container],
+.fullwidth > #wowslider-container,
+.fullwidth > #wowslider-container1 {
+  display: block;
+  max-width: 100%;
+  max-height: 360px;
+}
+[id*=wowslider-container] .ws_images > div > img,
+#wowslider-container .ws_images > div > img,
+#wowslider-container1 .ws_images > div > img,
+.fullwidth > [id*=wowslider-container] .ws_images,
+.fullwidth > #wowslider-container .ws_images,
+.fullwidth > #wowslider-container1 .ws_images {
+  max-height: 360px;
+  max-width: none;
+}
+
+.ws_fs_wrapper [id*=wowslider-container] .ws_images > div > img,
+.ws_fs_wrapper #wowslider-container .ws_images > div > img,
+.ws_fs_wrapper #wowslider-container1 .ws_images > div > img {
+  max-height: none;
+}
+.ws_fs_wrapper [id*=wowslider-container] .ws_images,
+.ws_fs_wrapper #wowslider-container .ws_images,
+.ws_fs_wrapper #wowslider-container1 .ws_images {
+  max-width: none;
+}
+
+/* fix some changes in 7.1 slider */
+[id*=wowslider-container] > div.ws_images img,
+#wowslider-container > div.ws_images img,
+#wowslider-container1 > div.ws_images img {
+  width: auto;
+  max-width: 100%;
+}
+[id*=wowslider-container] > div.ws_images .ws_list img,
+#wowslider-container > div.ws_images .ws_list img,
+#wowslider-container1 > div.ws_images .ws_list img,
+[id*=wowslider-container] > div.ws_images .ws_effect img,
+#wowslider-container > div.ws_images .ws_effect img,
+#wowslider-container1 > div.ws_images .ws_effect img {
+  width: 100%;
+}
+[id*=wowslider-container] .ws_controls,
+#wowslider-container .ws_controls,
+#wowslider-container1 .ws_controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+/* fullscreen wrapper styles */
+.ws_fs_wrapper {
+  width:100%;
+  height: 100%;
+  background: #181818;
+}
+.ws_fs_wrapper [id*=wowslider-container],
+.ws_fs_wrapper #wowslider-container,
+.ws_fs_wrapper #wowslider-container1,
+.ws_fs_wrapper [id*=wowslider-container] .ws_images,
+.ws_fs_wrapper #wowslider-container .ws_images,
+.ws_fs_wrapper #wowslider-container1 .ws_images {
+  margin:0 auto;
+  max-height: none;
+}
+.ws_fs_wrapper [id*=wowslider-container],
+.ws_fs_wrapper #wowslider-container,
+.ws_fs_wrapper #wowslider-container1 {
+  border: 0;
+  outline: 0;
+  -webkit-box-shadow: 0;
+  -moz-box-shadow: 0;
+  box-shadow: 0; 
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+
+
+
+
+/* RESPONSIVE */
+@media only screen and (min-width: 984px) {
+  .container {
+    overflow: hidden;
+  }
+}
+@media only screen and (max-width: 800px) {
+  /* flags + devices */
+  #devices {
+    display: none;
+  }
+  #flags {
+    text-align: center;
+  }
+  /* why wowslider */
+  #annotation .item {
+    float: none;
+    width: 100%;
+  }
+  #annotation .td-right .spacer {
+    padding: 0;
+  }
+  .letstalkbutton {
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* recent demos */
+  .crop200, .homework {
+    height: auto;
+  }
+  .work {
+    text-align: center;
+  }
+  .work li {
+    float: none;
+    display: inline-block;
+    margin: 10px auto;
+  }
+}
+
+/* sections */
+.sections {
+    margin-top: 34px;
+}
+.sections li {
+    font-family: MisoBold;
+    font-size: 23px;
+    line-height: 30px;
+}

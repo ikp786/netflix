@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head> 
+        <title>{{ config('app.name', 'Laravel') }}</title>          
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        <link rel="icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon" />    
+        <link rel="stylesheet" type="text/css" id="theme" href="{{ asset('css/theme-default.css') }}"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+        @yield('style')
+        
+        <style>
+            .s_btn1{
+                margin-right: 4px;
+            }
+            .wrap_box{
+                background: #ededec !important;
+            }
+            textarea{
+                width: 100% !important;
+                border: 1px solid #b3b3b3;
+            }
+            #newVideoCastRow .input-group{
+              display: inline-flex;
+            }
+            #removeVideoCastRow{
+              padding: 9px;
+              text-align: center;
+              margin-left: 3px;
+            }
+            #newMoreVideoRow .input-group{
+              display: inline-flex;
+            }
+            #removeMoreVideoRow{
+              padding: 9px;
+              text-align: center;
+              margin-left: 3px;
+            }
+        </style>      
+            
+   </head>
+   <body>
+      
+      <div class="page-container">
+         @include('admin.include.side_nav')   
+         <div class="page-content"> 
+               @include('admin.include.top_nav')
+                
+               <div class="page-content-wrap">
+                  @yield('content')
+               </div>  
+ 
+        </div>
+      </div> 
+      <div class="message-box animated fadeIn" data-sound="alert" id="mb-remove-row">
+            <div class="mb-container">
+                <div class="mb-middle">
+                    <div class="mb-title"><span class="fa fa-times"></span> Remove <strong>Data</strong> ?</div>
+                    <div class="mb-content">
+                        <p>Are you sure you want to remove this row?</p>                    
+                        <p>Press Yes if you sure.</p>
+                    </div>
+                    <div class="mb-footer">
+                        <div class="pull-right">
+                            <button class="btn btn-success btn-lg mb-control-yes">Yes</button>
+                            <button class="btn btn-default btn-lg mb-control-close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <!-- MESSAGE BOX-->
+        <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+            <div class="mb-container">
+                <div class="mb-middle">
+                    <div class="mb-title"><span class="fa fa-sign-out"></span> Log <strong>Out</strong> ?</div>
+                    <div class="mb-content">
+                        <p>Are you sure you want to log out?</p>                    
+                        <p>Press No if you want to continue work. </p>
+                    </div>
+                    <div class="mb-footer">
+                        <div class="pull-right">
+                            <a href="{{ route('logout') }}" class="btn btn-success btn-lg">Yes</a>
+                            <button class="btn btn-default btn-lg mb-control-close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MESSAGE BOX-->
+
+        <!-- BLUEIMP GALLERY -->
+        <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
+            <div class="slides"></div>
+            <h3 class="title"></h3>
+            <a class="prev">‹</a>
+            <a class="next">›</a>
+            <a class="close">×</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div> 
+
+        <!-- START PRELOADS -->
+        <audio id="audio-alert" src="{{ url('audio/alert.mp3') }}" preload="auto"></audio>
+        <audio id="audio-fail" src="{{ url('audio/fail.mp3') }}" preload="auto"></audio>
+        <!-- END PRELOADS -->                  
+        
+      <!-- START SCRIPTS -->
+        <!-- START PLUGINS -->
+        <script type="text/javascript" src="{{ asset('js/plugins/jquery/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/plugins/jquery/jquery-ui.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/plugins/bootstrap/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>        
+        <!-- END PLUGINS -->
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script type="text/javascript" src="{{ asset('js/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+
+        <script type="text/javascript" src="{{ asset('js/plugins/summernote/summernote.js') }}"></script>
+        
+        <script>
+            var URL = '{{url('/')}}';  
+
+            var getUrl = window.location;
+            var baseurl = getUrl.origin; //or
+            var URL2 =  getUrl.origin + '/' +getUrl.pathname.split('/')[1]; 
+
+            $(document).on('click', '#removeVideoCastRow', function(){
+                $(this).closest('#inputVideoCastRow').remove();
+            });
+
+            $(document).on('click', '.removeVideoCastRowAjax', function (e){
+                
+                form_data_id = $(this).data('id');  
+               
+                e.preventDefault();
+                swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover again!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => { 
+                    if(willDelete){ 
+                        $.ajax({
+                            url:URL+"/video_cast_delete/"+form_data_id, 
+                            success:function(response){   
+                                $('#inputVideoCastRow_'+form_data_id).remove(); 
+                            }
+                        });
+                    } else {
+                        swal("Your record file is safe!");
+                    }
+                });
+
+            });
+
+            $(document).on('click', '#removeMoreVideoRow', function(){
+                $(this).closest('#inputMoreVideoRow').remove();
+            });
+
+            $(document).on('click', '.removeMoreVideoRowAjax', function (e){
+                
+                form_data_id = $(this).data('id');  
+          
+                e.preventDefault();
+                swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover again!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => { 
+                    if(willDelete){ 
+                        $.ajax({
+                            url:URL+"/more_video_delete/"+form_data_id, 
+                            success:function(response){   
+                                $('#inputMoreVideoRow_'+form_data_id).remove(); 
+                            }
+                        });
+                    } else {
+                        swal("Your record file is safe!");
+                    }
+                });
+
+            });
+
+            $(document).ready(function() {   
+
+                $(document).on("click", '.ch_input', function(e){  // worked with dynamic loaded jquery content
+        
+                    this.value = this.checked ? 1 : 0; 
+
+                    if(this.checked){
+                        $(this).attr( 'checked', 'checked');
+                    }else{
+                        $(this).removeAttr('checked');
+                    }
+                    
+                });
+      
+            
+                $(document).on("click", '.common_status_update', function(e){
+
+                    data_id = $(this).data('id');
+                    
+                    var updated_status = $(this).val();  
+
+                    data_action = $(this).data('action'); 
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    }); 
+                     
+                    var form_data = new FormData();
+                    form_data.append("record_id",data_id);
+                    form_data.append("status",updated_status);
+                    
+                    if(data_action=='user' && updated_status=='0'){
+ 
+                        $('#my_property_id').val(data_id); 
+
+                        $('#rejection_modal').modal('show'); 
+                        
+                        return false;
+                    
+                    }else{
+
+                        form_action = data_action+'_status_update';    
+                          
+                        $.ajax({
+                            type:"POST", 
+                            url: URL+"/"+form_action,
+                            data:form_data, 
+                            enctype: 'multipart/form-data',
+                            processData: false,  // Important!
+                            contentType: false,
+                            cache: false,
+                            dataType: "json",
+                             
+                            success: function(response){  
+                          
+                                $('#message_box').html(''); 
+
+                                if(response.status=='10'){  
+                                    htm ='';
+                                    var array = $.map(response.missingParam, function(value, index){  
+                                       htm +='<span class="invalid-feedback" role="alert"><strong>' + value + "</strong></span>"; 
+                                    }); 
+                                    var htt_box =   '<div class="alert alert-danger" >'+
+                                                        '<button class="close" data-close="alert"></button>'+
+                                                        '<span>'+response.message+'</span>'+
+                                                    '</div>'; 
+                                    $('#message_box').html(htt_box);
+
+                                }else if(response.status=='1'){                                  
+                                    swal(response.message); 
+                                }
+
+                            }
+                        });
+
+                    }
+
+                });
+
+                $(document).on("click", '.del-confirm', function(e){  // worked with dynamic loaded jquery content
+        
+                    data_id = $(this).data('id');  
+                    e.preventDefault();
+                    swal({
+                        title: "Are you sure?",
+                        text: "Once deleted, you will not be able to recover again!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {  
+                        if(willDelete){     
+                            $('#form_del_'+data_id).submit();
+                        } else {
+                            swal("Your record file is safe!");
+                        }
+                    });
+
+                });
+               
+               $("#common_form_submit").click(function(){   
+                  setTimeout(function(){ $('#message_box').html(''); }, 6000);
+              });
+
+               $(".del-confirm").click(function(){  
+                  e.preventDefault();
+                  swal({
+                      title: "Are you sure?",
+                      text: "Once deleted, you will not be able to recover again!",
+                      icon: "warning",
+                      buttons: true,
+                      dangerMode: true,
+                  })
+                  .then((willDelete) => {  
+                      if(willDelete){     
+                            $(".del-confirm").closest('form').submit();
+                            /*
+                                $('#my_data_table').DataTable().ajax.reload(); 
+                                if($(this).hasClass("my_data_table")){
+                                    
+                                }
+                            */    
+                      } else {
+                          swal("Your record file is safe!");
+                      }
+                  });
+               });
+
+ 
+                  $("#addVideoCastRow").click(function (){  
+
+                        var html = '<div id="inputVideoCastRow" class="cast_vid_append">'+
+                                    '<div class="col-lg-4">'+
+                                          '<input type="text" placeholder="Title" class="form-control" maxlength="200" name="cast_title[]" />'+  
+                                    '</div>'+
+                                    '<div class="col-lg-4">'+
+                                        '<textarea name="cast_description[]" placeholder="Description" class="form-control rounded-0" ></textarea>'+  
+                                    '</div>'+
+                                    '<div class="col-lg-2">'+
+                                        '<input style="margin-left: 4px;" type="file" class="form-control" name="cast_image[]">'+  
+                                    '</div>'+
+                                    '<div class="col-lg-1">'+
+                                        '<button id="removeVideoCastRow" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>'+
+                                    '</div>'+
+                                '</div>';
+
+                        $('#newVideoCastRow').append(html);
+                  
+                  });
+
+                  $("#addMoreVideoRow").click(function (){
+                    lennn = $('.more_vid_append').length;
+                   
+                    select_boxx_htm = '<select name="language_type_id[]" id="vid_lang_'+lennn+'" class="form-control" ></select>';
+                    $.ajax({
+                        type:"GET", 
+                        url: URL+"/api/get_language_type",
+                        enctype: 'multipart/form-data',
+                        processData: false,  // Important!
+                        contentType: false,
+                        cache: false,
+                        dataType: "JSON", 
+                        success: function(response){  
+
+                            lang_htm_mn = '<option value="">Select Language</option>';
+                            if(response.data.length>0){ 
+                      
+                               for(i=0;i<response.data.length;i++){
+                                     lang_htm_mn +='<option value="'+response.data[i].id +'">'+response.data[i].language_title+'</option>';
+
+                                }
+                                $('#vid_lang_'+lennn).append(lang_htm_mn);
+                            } 
+                             
+                        }
+                    }); 
+
+                    var html = '<div id="inputMoreVideoRow" class="more_vid_append">'+
+                                    '<div class="col-lg-5">'+select_boxx_htm+'</div>'+
+                                    '<div class="col-lg-5">'+
+                                        '<input style="margin-left: 4px;" type="file" class="form-control" name="vid_media_url[]" />'+ 
+                                    '</div>'+
+                                    '<div class="col-lg-2">'+
+                                        '<button id="removeMoreVideoRow" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>'+
+                                    '</div>'+
+                                '</div>';
+
+                    $('#newMoreVideoRow').append(html);
+                  
+                  });
+
+                  $(".update_booking_status").change(function (e) {  
+
+                        booking_id = $(this).data('id');  
+                        booking_status = $(this).val();
+
+                        e.preventDefault();
+                        swal({
+                            title: "Are you sure?",
+                            text: "Once deleted, you will not be able to recover again!",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                        .then((willDelete) => { 
+                           if(willDelete){ 
+                                $.ajax({
+                                 url:URL+"/booking_status_update/"+booking_id+"/"+booking_status, 
+                                 success:function(response){   
+                                    if(response.status=='1'){
+                                       swal(response.message);
+                                    }
+                                 }
+                              }); 
+                           } 
+                        });
+
+                  });
+
+                  $(".decimal_number").keypress(function(e){   // input number only with decimal value 
+                     return (e.charCode !=8 && e.charCode ==0 || ( e.charCode == 46 || (e.charCode >= 48 && e.charCode <= 57)))
+                  });
+
+            });
+
+
+            $(document).on('click', '#removePropImgRow', function () {
+                  $(this).closest('#inputPropImgRow').remove();
+               });
+
+               $(document).on('click', '#removeRow', function () {
+                  $(this).closest('#inputFormRow').remove();
+               });
+ 
+               
+         </script>
+
+        <!-- START THIS PAGE PLUGINS-->        
+        <script type='text/javascript' src="{{ asset('js/plugins/icheck/icheck.min.js') }}"></script>        
+        <script type="text/javascript" src="{{ asset('js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/plugins/scrolltotop/scrolltopcontrol.js') }}"></script>
+        
+        <script type="text/javascript" src="{{ asset('js/plugins/morris/raphael-min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/plugins/morris/morris.min.js') }}"></script>       
+        <script type="text/javascript" src="{{ asset('js/plugins/rickshaw/d3.v3.js') }}"></script>
+        <!-- <script type="text/javascript" src="{{ asset('js/plugins/rickshaw/rickshaw.min.js') }}"></script> -->
+        <script type='text/javascript' src="{{ asset('js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}" ></script>
+        <script type='text/javascript' src="{{ asset('js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>                
+        <script type='text/javascript' src="{{ asset('js/plugins/bootstrap/bootstrap-datepicker.js') }}" ></script>                
+        <script type="text/javascript" src="{{ asset('js/plugins/owl/owl.carousel.min.js') }}"></script>    
+
+        <script type='text/javascript' src='{{ asset("js/plugins/bootstrap/bootstrap-select.js") }}'></script> 
+               
+
+        
+        <script type='text/javascript' src='{{ asset("js/plugins/maskedinput/jquery.maskedinput.min.js") }}'></script>
+
+        
+        <script type="text/javascript" src="{{ asset('js/plugins/moment.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/plugins/daterangepicker/daterangepicker.js') }}"></script>
+        <!-- END THIS PAGE PLUGINS-->        
+
+        <!-- START TEMPLATE -->
+        <!-- <script type="text/javascript" src="{{ asset('js/settings.js') }}"></script> -->
+        
+        <script type="text/javascript" src="{{ asset('js/plugins.js') }}"></script>        
+        <script type="text/javascript" src="{{ asset('js/actions.js') }}"></script>
+        
+        <!-- <script type="text/javascript" src="{{ asset('js/demo_dashboard.js') }}"></script> -->
+
+        @yield('script')
+        <script type='text/javascript' src='{{ asset("js/plugins/jquery-validation/jquery.validate.js") }}'></script>
+        <script type='text/javascript' src='{{ asset("js/plugins/validationengine/languages/jquery.validationEngine-en.js") }}'></script>
+        <script type='text/javascript' src='{{ asset("js/plugins/validationengine/jquery.validationEngine.js") }}'></script> 
+ 
+        <script type="text/javascript" src="{{ asset('js/plugins/blueimp/jquery.blueimp-gallery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/plugins/dropzone/dropzone.min.js') }}"></script>
+   </body>
+</html>
